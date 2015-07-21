@@ -1,0 +1,21 @@
+{
+  "name": "fDatepicker-Ex.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/FrendEr/fDatepicker-Ex.js",
+  "authors": [
+    "FrendEr <frend.wong@gmail.com>"
+  ],
+  "description": "fDatepicker.js的拓展版本，可以选择特定日历区间，目前适用于M.WOQU.COM酒店业务线。",
+  "main": "fDatepicker-Ex.js",
+  "keywords": [
+    "datepicker"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
