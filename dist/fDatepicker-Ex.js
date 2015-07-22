@@ -26,40 +26,44 @@
     Datepicker.VERSION = '1.0.0';
 
     Datepicker.DEFAULT = {
-        container      : '',
-        initDate       : '',
-        selectStart    : '',
-        selectEnd      : '',
-        startDate      : '',
-        endDate        : '',
-        weekFixed      : false,
-        singleFrame    : false,
-        initFrames     : 3,
-        loadFrames     : 3,
-        loadOffset     : 100,
-        i18n           : false,
-        selectCallback : $.noop
+        container        : '',
+        initDate         : '',
+        selectStart      : '',
+        selectEnd        : '',
+        startDate        : '',
+        endDate          : '',
+        weekFixed        : true,
+        singleFrame      : false,
+        initFrames       : 3,
+        loadFrames       : 3,
+        loadOffset       : 100,
+        i18n             : false,
+        startCallback    : $.noop,
+        endCallback      : $.noop,
+        completeCallback : $.noop
     };
 
     function Datepicker(options) {
         var options = $.extend(Datepicker.DEFAULT, options);
 
-        this.$container     = $(options.container);
-        this.initDate       = options.initDate && typeof options.initDate == 'string' ? new Date(options.initDate) : options.initDate;
-        this.startDate      = typeof options.startDate == 'string' ? new Date(options.startDate) : options.startDate;
-        this.endDate        = typeof options.endDate == 'string' ? new Date(options.endDate) : options.endDate;
-        this.weekFixed      = options.singleFrame ? false : options.weekFixed;
-        this.initFrames     = options.initFrame;
-        this.restFrames     = 0;
-        this.loadFrames     = options.loadFrames;
-        this.tmpYear        = 0;
-        this.tmpMonth       = 0;
-        this.loadOffset     = options.loadOffset;
-        this.singleFrame    = options.singleFrame;
-        this.i18n           = options.i18n;
-        this.selectStart    = typeof options.selectStart == 'string' ? new Date(options.selectStart) : options.selectStart;
-        this.selectEnd      = typeof options.selectEnd == 'string' ? new Date(options.selectEnd) : options.selectEnd;
-        this.selectCallback = options.selectCallback;
+        this.$container       = $(options.container);
+        this.initDate         = options.initDate && typeof options.initDate == 'string' ? new Date(options.initDate) : options.initDate;
+        this.startDate        = typeof options.startDate == 'string' ? new Date(options.startDate) : options.startDate;
+        this.endDate          = typeof options.endDate == 'string' ? new Date(options.endDate) : options.endDate;
+        this.weekFixed        = options.singleFrame ? false : options.weekFixed;
+        this.initFrames       = options.initFrame;
+        this.restFrames       = 0;
+        this.loadFrames       = options.loadFrames;
+        this.tmpYear          = 0;
+        this.tmpMonth         = 0;
+        this.loadOffset       = options.loadOffset;
+        this.singleFrame      = options.singleFrame;
+        this.i18n             = options.i18n;
+        this.selectStart      = typeof options.selectStart == 'string' ? new Date(options.selectStart) : options.selectStart;
+        this.selectEnd        = typeof options.selectEnd == 'string' ? new Date(options.selectEnd) : options.selectEnd;
+        this.startCallback    = options.startCallback;
+        this.endCallback      = options.endCallback;
+        this.completeCallback = options.completeCallback;
 
         // cache after props set
         var self = this;
@@ -142,6 +146,9 @@
             if (!this.selectStart) {
                 $this.addClass('selected check-in');
                 this.selectStart = new Date($this.data('date'));
+
+                // start date select callback
+                this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
             } else if (this.selectStart && !this.selectEnd) {
                 var sumDates = (new Date($this.data('date')) - this.selectStart) / (24 * 3600 * 1000);
 
@@ -149,18 +156,24 @@
                     $this.addClass('selected check-out');
                     this.selectEnd = new Date($this.data('date'));
 
-                    // custom callback call
-                    this.selectCallback.call(this, UTILS.formatDate(this.selectStart, '-'), UTILS.formatDate(this.selectEnd, '-'), sumDates);
+                    // complete callback
+                    this.completeCallback.call(this, UTILS.formatDate(this.selectStart, '-'), UTILS.formatDate(this.selectEnd, '-'), sumDates);
                 } else {
                     this.$container.find('.selected').removeClass('selected check-in check-out');
                     $this.addClass('selected check-in');
                     this.selectStart = new Date($this.data('date'));
+
+                    // start date select callback
+                    this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
                 }
             } else if (this.selectStart && this.selectEnd) {
                 this.$container.find('.selected').removeClass('selected check-in check-out');
                 $this.addClass('selected check-in');
                 this.selectStart = new Date($this.data('date'));
                 this.selectEnd = '';
+
+                // start date select callback
+                this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
             }
             // set ".is-inner" items
             if (this.selectStart && this.selectEnd) {
