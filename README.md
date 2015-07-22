@@ -15,8 +15,11 @@ var datepicker = new DatepickerHotel({
     initFrame: 4,
     loadFrames: 3,
     loadOffset: 60,
-    selectCallback: function(startDate, endDate, sumDates) {
-        alert('Callback function!! 入住时间：' + startDate + ' 退房时间：' + endDate + ' 共' + sumDates + '天');
+    startCallback: function(startDate) {
+        console.log('Start Callback function!! 入住时间：' + startDate);
+    },
+    completeCallback: function(startDate, endDate, sumDates) {
+        console.log('Complete Callback function!! 入住时间：' + startDate + ' 退房时间：' + endDate + ' 共' + sumDates + '天');
     }
 });
 
@@ -61,8 +64,15 @@ link：[http://frender.github.io/fDatepicker-Ex.js](http://frender.github.io/fDa
 - **i18n** `@Boolean`
 > 开启国际化支持英文模式，默认使用中文模式
 
-- **selectCallback** `@Function`
-> 选择日期后的回调函数
+- **startCallback** `@Function`
+> 选择开始日期后的回调函数
+  - startDate `@Params` 开始日期值
+
+- **completeCallback** `@Function`
+> 选择结束日期后的回调函数
+  - startDate `@Params` 开始日期值
+  - endDate `@Params` 结束日期值
+  - sumDates `@Params` 总计天数
 
 ## Installation
 
