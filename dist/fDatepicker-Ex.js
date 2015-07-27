@@ -47,9 +47,9 @@
         var options = $.extend(Datepicker.DEFAULT, options);
 
         this.$container       = $(options.container);
-        this.initDate         = options.initDate && typeof options.initDate == 'string' ? new Date(options.initDate) : options.initDate;
-        this.startDate        = typeof options.startDate == 'string' ? new Date(options.startDate) : options.startDate;
-        this.endDate          = typeof options.endDate == 'string' ? new Date(options.endDate) : options.endDate;
+        this.initDate         = UTILS.formatDateObj(options.initDate && typeof options.initDate == 'string' ? new Date(options.initDate) : options.initDate);
+        this.startDate        = UTILS.formatDateObj(typeof options.startDate == 'string' ? new Date(options.startDate) : options.startDate);
+        this.endDate          = UTILS.formatDateObj(typeof options.endDate == 'string' ? new Date(options.endDate) : options.endDate);
         this.weekFixed        = options.singleFrame ? false : options.weekFixed;
         this.initFrames       = options.initFrame;
         this.restFrames       = 0;
@@ -59,8 +59,8 @@
         this.loadOffset       = options.loadOffset;
         this.singleFrame      = options.singleFrame;
         this.i18n             = options.i18n;
-        this.selectStart      = typeof options.selectStart == 'string' ? new Date(options.selectStart) : options.selectStart;
-        this.selectEnd        = typeof options.selectEnd == 'string' ? new Date(options.selectEnd) : options.selectEnd;
+        this.selectStart      = UTILS.formatDateObj(typeof options.selectStart == 'string' ? new Date(options.selectStart) : options.selectStart);
+        this.selectEnd        = UTILS.formatDateObj(typeof options.selectEnd == 'string' ? new Date(options.selectEnd) : options.selectEnd);
         this.startCallback    = options.startCallback;
         this.endCallback      = options.endCallback;
         this.completeCallback = options.completeCallback;
@@ -148,7 +148,7 @@
                 this.selectStart = new Date($this.data('date'));
 
                 // start date select callback
-                this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
+                this.startCallback.call(this, UTILS.formatDateString(this.selectStart, '-'));
             } else if (this.selectStart && !this.selectEnd) {
                 var sumDates = (new Date($this.data('date')) - this.selectStart) / (24 * 3600 * 1000);
 
@@ -157,14 +157,14 @@
                     this.selectEnd = new Date($this.data('date'));
 
                     // complete callback
-                    this.completeCallback.call(this, UTILS.formatDate(this.selectStart, '-'), UTILS.formatDate(this.selectEnd, '-'), sumDates);
+                    this.completeCallback.call(this, UTILS.formatDateString(this.selectStart, '-'), UTILS.formatDateString(this.selectEnd, '-'), sumDates);
                 } else {
                     this.$container.find('.selected').removeClass('selected check-in check-out');
                     $this.addClass('selected check-in');
                     this.selectStart = new Date($this.data('date'));
 
                     // start date select callback
-                    this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
+                    this.startCallback.call(this, UTILS.formatDateString(this.selectStart, '-'));
                 }
             } else if (this.selectStart && this.selectEnd) {
                 this.$container.find('.selected').removeClass('selected check-in check-out');
@@ -173,7 +173,7 @@
                 this.selectEnd = '';
 
                 // start date select callback
-                this.startCallback.call(this, UTILS.formatDate(this.selectStart, '-'));
+                this.startCallback.call(this, UTILS.formatDateString(this.selectStart, '-'));
             }
             // set ".is-inner" items
             if (this.selectStart && this.selectEnd) {
@@ -185,8 +185,8 @@
         setInnerDates: function() {
             var self = this,
                 $container = self.$container,
-                startDate = UTILS.formatDate(self.selectStart, '/'),
-                endDate = UTILS.formatDate(self.selectEnd, '/'),
+                startDate = UTILS.formatDateString(self.selectStart, '/'),
+                endDate = UTILS.formatDateString(self.selectEnd, '/'),
                 range = (self.selectEnd - self.selectStart) / (24 * 3600 * 1000) - 1,
                 startDateItem = $container.find('span[data-date="' + startDate + '"]'),
                 endDateItem = $container.find('span[data-date="' + endDate + '"]'),
@@ -273,6 +273,13 @@
         weeksi18n  : ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat'],
         months     : ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
         monthsi18n : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        holiday    : {
+            '1/1'  : '元旦',
+            '5/1'  : '劳动节',
+            '6/1'  : '儿童节',
+            '10/1' : '国庆节',
+            '12/25': '圣诞节'
+        },
 
         getCurrentDate: function() {
             return new Date();
@@ -286,10 +293,16 @@
             return new Date(year, month + 1, 0).getDate();
         },
 
-        formatDate: function(date, separator) {
+        formatDateString: function(date, separator) {
             var date = typeof date === 'string' ? new Date(date) : date;
 
             return parseInt(date.getFullYear()) + separator + (parseInt(date.getMonth()) + 1) + separator + parseInt(date.getDate());
+        },
+
+        formatDateObj: function(date) {
+            var date = typeof date === 'string' ? new Date(date) : date;
+
+            return new Date(date.getFullYear() + '/' + (parseInt(date.getMonth()) + 1) + '/' + parseInt(date.getDate()));
         },
 
         fillArr: function(year, month) {
