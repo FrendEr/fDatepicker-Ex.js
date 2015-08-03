@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.header {
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    color: #fff;
+    font-family: verdana;
+}
+.header p {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #05b47a;
+    font-size: 20px;
+    z-index: 1001;
+}
+
+
+.datepicker-table {
+  overflow: hidden;
+  text-align: center;
+  font-size: 14px;
+  color: #3e3e3e;
+  width: 100%;
+  border-bottom: 5px solid #f1f1f1;
+}
+.datepicker-table .datepicker-header {
+  position: relative;
+  height: 22px;
+  line-height: 22px;
+  font-size: 12px;
+  margin: 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+.datepicker-header i {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  font-style: normal;
+  width: 40px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  font-weight: bold;
+}
+.datepicker-header .disable-btn {
+  opacity: 0.1;
+}
+.datepicker-header .prev-btn {
+  left: 0;
+}
+.datepicker-header .next-btn {
+  right: 0;
+}
+.datepicker-table span {
+  float: left;
+  height: 50px;
+  line-height: 50px;
+  width: 14.28%;
+  border-bottom: 1px solid #f1f1f1;
+  border-right: 1px solid #f1f1f1;
+}
+.datepicker-table span i {
+  font-style: normal;
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 50%;
+  margin: 3px auto 0 auto;
+}
+.datepicker-table .dp-th {
+  font-weight: bold;
+  background-color: #036c49;
+  color: #fff;
+  height: 22px;
+  line-height: 22px;
+  border: none;
+}
+.datepicker-table .is-today {
+  position: relative;
+}
+.datepicker-table .is-today i {
+  background-color: #f1913b;
+  color: #fff;
+}
+.datepicker-table .is-today:before {
+  content: "今天";
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 14px;
+  color: #f1913b;
+}
+.datepicker-table .is-weekend {
+  color: #f1913b;
+}
+.datepicker-table .is-outdate {
+  color: #f1f1f1;
+}
+.datepicker-table .selected {
+  position: relative;
+}
+.datepicker-table .selected.check-in:before {
+  content: "入住";
+}
+.datepicker-table .selected.check-out:before {
+  content: "退房";
+}
+.datepicker-table .selected:before {
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 14px;
+  color: #00a66e;
+}
+.datepicker-table .selected i {
+  background-color: #00a66e;
+  color: #fff;
+}
+.datepicker-table .is-inner i {
+  opacity: .5;
+  background-color: #00a66e;
+  color: #fff;
+}
+.datepicker-table.fixed {
+  border-bottom: none;
+  position: fixed;
+  top: 45px;
+  left: 0;
+  width: 100%;
+  height: 22px;
+  line-height: 22px;
+  z-index: 100;
+}
